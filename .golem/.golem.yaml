@@ -1,0 +1,19 @@
+file: ""
+name: summoner
+repo: github.com/dashotv/summoner
+models:
+    enabled: false
+    package: models
+    output: models
+    definitions: .golem/models
+routes:
+    enabled: false
+    name: ""
+    definition: .golem/routes.yaml
+    output: server
+    repo: github.com/dashotv/summoner
+jobs:
+    enabled: false
+    package: jobs
+    definitions: .golem/jobs.yaml
+    output: jobs
