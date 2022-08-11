@@ -10,7 +10,6 @@ import (
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 
 	"github.com/dashotv/summoner/config"
-	"github.com/dashotv/summoner/models"
 )
 
 var once sync.Once
@@ -19,7 +18,7 @@ var instance *App
 type App struct {
 	Config *config.Config
 	Router *gin.Engine
-	DB     *models.Connector
+	//DB     *models.Connector
 	// Cache  *redis.Client
 	Log *logrus.Entry
 	// Add additional clients and connections
@@ -36,10 +35,10 @@ func initialize() *App {
 	cfg := config.Instance()
 	log := logger()
 
-	db, err := models.NewConnector()
-	if err != nil {
-		log.Errorf("database connection failed: %s", err)
-	}
+	//db, err := models.NewConnector()
+	//if err != nil {
+	//	log.Errorf("database connection failed: %s", err)
+	//}
 
 	if cfg.Mode == "dev" {
 		logrus.SetLevel(logrus.DebugLevel)
@@ -63,7 +62,7 @@ func initialize() *App {
 	return &App{
 		Config: cfg,
 		Router: router,
-		DB:     db,
+		//DB:     db,
 		// Cache:    cache,
 		Log: log,
 	}

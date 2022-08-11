@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
 
 	"github.com/dashotv/summoner/application"
@@ -33,12 +34,29 @@ func (s *Server) Start() error {
 
 	s.Routes()
 
-	//s.Jobs configuration
+	c := cron.New(cron.WithSeconds())
+	if _, err := c.AddFunc("*/30 * * * * *", s.process); err != nil {
+		return errors.Wrap(err, "adding cron function")
+	}
+
+	go func() {
+		s.Log.Info("starting cron...")
+		c.Start()
+	}()
 
 	s.Log.Info("starting web...")
-	if err := s.Router.Run(fmt.Sprintf(":%d", s.Config.Port)); err != nil {
+	if err := s.Router.Run(fmt.Sprintf(":%d", cfg.Port)); err != nil {
 		return errors.Wrap(err, "starting router")
 	}
 
 	return nil
+}
+
+func (s *Server) process() {
+	s.Log.Info("processing downloads")
+	// create new downloads
+	// search / load matching torrents
+	// manage torrents
+	// download torrents
+	// move torrents
 }
